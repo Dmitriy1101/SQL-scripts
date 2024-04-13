@@ -1,7 +1,7 @@
 use test_memory;
 go
 
---Получаем id спецификации по имени заказа
+--РџРѕР»СѓС‡Р°РµРј id СЃРїРµС†РёС„РёРєР°С†РёРё РїРѕ РёРјРµРЅРё Р·Р°РєР°Р·Р°
 create function dbo.get_spec_by_ord_name (@name char(20))
 returns table
 as
@@ -13,7 +13,7 @@ return
 );
 go
 
---Получаем заказ по id спецификации
+--РџРѕР»СѓС‡Р°РµРј Р·Р°РєР°Р· РїРѕ id СЃРїРµС†РёС„РёРєР°С†РёРё
 create function dbo.get_ord_by_spec_id (@specif_id int)
 returns table
 as
@@ -25,7 +25,7 @@ return
 );
 go
 
---Вычисляем стоимость заказа имея id спецификации
+--Р’С‹С‡РёСЃР»СЏРµРј СЃС‚РѕРёРјРѕСЃС‚СЊ Р·Р°РєР°Р·Р° РёРјРµСЏ id СЃРїРµС†РёС„РёРєР°С†РёРё
 create function dbo.get_ord_price_by_spec_id (@specif_id int)
 returns smallmoney
 with execute as caller

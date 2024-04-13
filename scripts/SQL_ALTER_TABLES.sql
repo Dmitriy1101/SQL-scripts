@@ -1,26 +1,26 @@
 use test_memory;
 go
 
---Добавляем вычисляемый столбец и сразу расчитываем
+--Р”РѕР±Р°РІР»СЏРµРј РІС‹С‡РёСЃР»СЏРµРјС‹Р№ СЃС‚РѕР»Р±РµС† Рё СЃСЂР°Р·Сѓ СЂР°СЃС‡РёС‚С‹РІР°РµРј
 alter table workers add infofield  as ('s'+ convert(varchar(10), id)+ ' ' + name) persisted;
 go
 
---Имя заказа не нолевое
+--РРјСЏ Р·Р°РєР°Р·Р° РЅРµ РЅРѕР»РµРІРѕРµ
 alter table dbo.orders 
 alter column name char(20) not null;
 go
 
---Имя заказа  уникально
+--РРјСЏ Р·Р°РєР°Р·Р°  СѓРЅРёРєР°Р»СЊРЅРѕ
 alter table orders 
 add constraint UC_ord_name unique (name);
 go
 
---Имя материала уникально
+--РРјСЏ РјР°С‚РµСЂРёР°Р»Р° СѓРЅРёРєР°Р»СЊРЅРѕ
 alter table materials 
 add constraint UC_mat_name unique (name);
 go
 
---Делаем комбинацию полей уникальной
+--Р”РµР»Р°РµРј РєРѕРјР±РёРЅР°С†РёСЋ РїРѕР»РµР№ СѓРЅРёРєР°Р»СЊРЅРѕР№
 alter table workers 
 add constraint UC_wor_nspd unique (name, surname, patronymic, birthdate);
 go

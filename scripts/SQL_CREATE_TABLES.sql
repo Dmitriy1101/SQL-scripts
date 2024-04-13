@@ -1,8 +1,8 @@
 use test_memory;
 go
 
---Такая структура создана для дальнейшей практики исправления столбцов.
---Работники выполняющие заказы
+--РўР°РєР°СЏ СЃС‚СЂСѓРєС‚СѓСЂР° СЃРѕР·РґР°РЅР° РґР»СЏ РґР°Р»СЊРЅРµР№С€РµР№ РїСЂР°РєС‚РёРєРё РёСЃРїСЂР°РІР»РµРЅРёСЏ СЃС‚РѕР»Р±С†РѕРІ.
+--Р Р°Р±РѕС‚РЅРёРєРё РІС‹РїРѕР»РЅСЏСЋС‰РёРµ Р·Р°РєР°Р·С‹
 create table workers(
 	id int identity (1,1) not null, 
 	constraint PK_worker_id primary key clustered(id),
@@ -14,7 +14,7 @@ create table workers(
 	is_active bit default 1
 );
 
---Заказы 
+--Р—Р°РєР°Р·С‹ 
 create table orders(
 	id int identity (1,1) not null,
 	constraint PK_order_id primary key clustered(id), 
@@ -27,7 +27,7 @@ create table orders(
 	on update cascade
 );
 
---Материалы их цены и описание
+--РњР°С‚РµСЂРёР°Р»С‹ РёС… С†РµРЅС‹ Рё РѕРїРёСЃР°РЅРёРµ
 create table materials(
 	id int identity (1,1) not null,
 	constraint PK_materials_id primary key clustered(id), 
@@ -36,7 +36,7 @@ create table materials(
 	description varchar(200)
 );
 
---Спецификация, позже можем добавить разработчика, чертёж или гост
+--РЎРїРµС†РёС„РёРєР°С†РёСЏ, РїРѕР·Р¶Рµ РјРѕР¶РµРј РґРѕР±Р°РІРёС‚СЊ СЂР°Р·СЂР°Р±РѕС‚С‡РёРєР°, С‡РµСЂС‚С‘Р¶ РёР»Рё РіРѕСЃС‚
 create table specification(
 	id int identity (1,1) not null,
 	constraint PK_specification_id primary key clustered(id), 
@@ -46,7 +46,7 @@ create table specification(
 	on update cascade
 );
 
---Связываем материялы, их количество с спецификаиями
+--РЎРІСЏР·С‹РІР°РµРј РјР°С‚РµСЂРёСЏР»С‹, РёС… РєРѕР»РёС‡РµСЃС‚РІРѕ СЃ СЃРїРµС†РёС„РёРєР°РёСЏРјРё
 create table material_specification(
 	quantity smallint,
 	material_id int not null foreign key references materials(id),

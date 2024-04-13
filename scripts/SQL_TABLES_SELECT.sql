@@ -20,20 +20,20 @@ go
 --join dbo.materials as m on m.id = ms.material_id
 --where ms.specification_id = 1
 
---select o.name as 'Заказ', 
---o.price as 'Цена заказа',
---o.description as 'Описание заказа',
---ms.quantity  as 'Количество материала',
---m.name as 'Материал',
---m.price as 'Цена', 
---m.description as 'Коментарий'
+--select o.name as 'Р—Р°РєР°Р·', 
+--o.price as 'Р¦РµРЅР° Р·Р°РєР°Р·Р°',
+--o.description as 'РћРїРёСЃР°РЅРёРµ Р·Р°РєР°Р·Р°',
+--ms.quantity  as 'РљРѕР»РёС‡РµСЃС‚РІРѕ РјР°С‚РµСЂРёР°Р»Р°',
+--m.name as 'РњР°С‚РµСЂРёР°Р»',
+--m.price as 'Р¦РµРЅР°', 
+--m.description as 'РљРѕРјРµРЅС‚Р°СЂРёР№'
 --from dbo.orders as o
 --join dbo.specification as s on o.id = s.order_id
 --left join dbo.material_specification as ms on s.id = ms.specification_id
 --left join dbo.materials as m on m.id = ms.material_id;
 
 --select * from orders_info
---where [Цена заказа] is not null
---order by заказ;
+--where [Р¦РµРЅР° Р·Р°РєР°Р·Р°] is not null
+--order by Р·Р°РєР°Р·;
 
 --select * from orders_info;

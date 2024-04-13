@@ -1,10 +1,10 @@
 use test_memory;
 go
 
---Скрипт для создания структуры БД test и заполнения таблиц тестовыми данными
+--РЎРєСЂРёРїС‚ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ СЃС‚СЂСѓРєС‚СѓСЂС‹ Р‘Р” test Рё Р·Р°РїРѕР»РЅРµРЅРёСЏ С‚Р°Р±Р»РёС† С‚РµСЃС‚РѕРІС‹РјРё РґР°РЅРЅС‹РјРё
 
---Такая структура создана для дальнейшей практики исправления столбцов.
---Работники выполняющие заказы
+--РўР°РєР°СЏ СЃС‚СЂСѓРєС‚СѓСЂР° СЃРѕР·РґР°РЅР° РґР»СЏ РґР°Р»СЊРЅРµР№С€РµР№ РїСЂР°РєС‚РёРєРё РёСЃРїСЂР°РІР»РµРЅРёСЏ СЃС‚РѕР»Р±С†РѕРІ.
+--Р Р°Р±РѕС‚РЅРёРєРё РІС‹РїРѕР»РЅСЏСЋС‰РёРµ Р·Р°РєР°Р·С‹
 create table workers(
 	id int identity (1,1) not null, 
 	constraint PK_worker_id primary key clustered(id),
@@ -16,7 +16,7 @@ create table workers(
 	is_active bit default 1
 );
 
---Заказы 
+--Р—Р°РєР°Р·С‹ 
 create table orders(
 	id int identity (1,1) not null,
 	constraint PK_order_id primary key clustered(id), 
@@ -29,7 +29,7 @@ create table orders(
 	on update cascade
 );
 
---Материалы их цены и описание
+--РњР°С‚РµСЂРёР°Р»С‹ РёС… С†РµРЅС‹ Рё РѕРїРёСЃР°РЅРёРµ
 create table materials(
 	id int identity (1,1) not null,
 	constraint PK_materials_id primary key clustered(id), 
@@ -38,7 +38,7 @@ create table materials(
 	description varchar(200)
 );
 
---Спецификация, позже можем добавить разработчика, чертёж или гост
+--РЎРїРµС†РёС„РёРєР°С†РёСЏ, РїРѕР·Р¶Рµ РјРѕР¶РµРј РґРѕР±Р°РІРёС‚СЊ СЂР°Р·СЂР°Р±РѕС‚С‡РёРєР°, С‡РµСЂС‚С‘Р¶ РёР»Рё РіРѕСЃС‚
 create table specification(
 	id int identity (1,1) not null,
 	constraint PK_specification_id primary key clustered(id), 
@@ -48,7 +48,7 @@ create table specification(
 	on update cascade
 );
 
---Связываем материялы, их количество с спецификаиями
+--РЎРІСЏР·С‹РІР°РµРј РјР°С‚РµСЂРёСЏР»С‹, РёС… РєРѕР»РёС‡РµСЃС‚РІРѕ СЃ СЃРїРµС†РёС„РёРєР°РёСЏРјРё
 create table material_specification(
 	quantity smallint,
 	material_id int not null foreign key references materials(id),
@@ -57,33 +57,33 @@ create table material_specification(
 );
 go
 
---Правки в таблицах
---Добавляем вычисляемый столбец и сразу расчитываем
+--РџСЂР°РІРєРё РІ С‚Р°Р±Р»РёС†Р°С…
+--Р”РѕР±Р°РІР»СЏРµРј РІС‹С‡РёСЃР»СЏРµРјС‹Р№ СЃС‚РѕР»Р±РµС† Рё СЃСЂР°Р·Сѓ СЂР°СЃС‡РёС‚С‹РІР°РµРј
 alter table workers add infofield  as ('s'+ convert(varchar(10), id)+ ' ' + name) persisted;
 go
 
---Имя заказа не нолевое
+--РРјСЏ Р·Р°РєР°Р·Р° РЅРµ РЅРѕР»РµРІРѕРµ
 alter table dbo.orders 
 alter column name char(20) not null;
 go
 
---Имя заказа  уникально
+--РРјСЏ Р·Р°РєР°Р·Р°  СѓРЅРёРєР°Р»СЊРЅРѕ
 alter table orders 
 add constraint UC_ord_name unique (name);
 go
 
---Имя материала уникально
+--РРјСЏ РјР°С‚РµСЂРёР°Р»Р° СѓРЅРёРєР°Р»СЊРЅРѕ
 alter table materials 
 add constraint UC_mat_name unique (name);
 go
 
---Делаем комбинацию полей уникальной
+--Р”РµР»Р°РµРј РєРѕРјР±РёРЅР°С†РёСЋ РїРѕР»РµР№ СѓРЅРёРєР°Р»СЊРЅРѕР№
 alter table workers 
 add constraint UC_wor_nspd unique (name, surname, patronymic, birthdate);
 go
 
---Функции
---Получаем id спецификации по имени заказа
+--Р¤СѓРЅРєС†РёРё
+--РџРѕР»СѓС‡Р°РµРј id СЃРїРµС†РёС„РёРєР°С†РёРё РїРѕ РёРјРµРЅРё Р·Р°РєР°Р·Р°
 create function dbo.get_spec_by_ord_name (@name char(20))
 returns table
 as
@@ -95,7 +95,7 @@ return
 );
 go
 
---Получаем заказ по id спецификации
+--РџРѕР»СѓС‡Р°РµРј Р·Р°РєР°Р· РїРѕ id СЃРїРµС†РёС„РёРєР°С†РёРё
 create function dbo.get_ord_by_spec_id (@specif_id int)
 returns table
 as
@@ -107,7 +107,7 @@ return
 );
 go
 
---Вычисляем стоимость заказа имея id спецификации
+--Р’С‹С‡РёСЃР»СЏРµРј СЃС‚РѕРёРјРѕСЃС‚СЊ Р·Р°РєР°Р·Р° РёРјРµСЏ id СЃРїРµС†РёС„РёРєР°С†РёРё
 create function dbo.get_ord_price_by_spec_id (@specif_id int)
 returns smallmoney
 with execute as caller
@@ -122,8 +122,8 @@ return @price;
 end;
 go
 
---Тригеры
---При создании заказа будет создаваться спецификация
+--РўСЂРёРіРµСЂС‹
+--РџСЂРё СЃРѕР·РґР°РЅРёРё Р·Р°РєР°Р·Р° Р±СѓРґРµС‚ СЃРѕР·РґР°РІР°С‚СЊСЃСЏ СЃРїРµС†РёС„РёРєР°С†РёСЏ
 create trigger create_order_specification
 on dbo.orders
 after insert
@@ -145,7 +145,7 @@ begin
 end;
 go
 
---При добавлении/изменении матерьяла в спецификации перерасчитывается стоимость заказа
+--РџСЂРё РґРѕР±Р°РІР»РµРЅРёРё/РёР·РјРµРЅРµРЅРёРё РјР°С‚РµСЂСЊСЏР»Р° РІ СЃРїРµС†РёС„РёРєР°С†РёРё РїРµСЂРµСЂР°СЃС‡РёС‚С‹РІР°РµС‚СЃСЏ СЃС‚РѕРёРјРѕСЃС‚СЊ Р·Р°РєР°Р·Р°
 create trigger create_order_price
 on dbo.material_specification
 after insert, update
@@ -167,29 +167,29 @@ begin
 end;
 go
 
---Заполнение таблиц
---Заполняем материаля
+--Р—Р°РїРѕР»РЅРµРЅРёРµ С‚Р°Р±Р»РёС†
+--Р—Р°РїРѕР»РЅСЏРµРј РјР°С‚РµСЂРёР°Р»СЏ
 insert into materials (name, price, description)
-values ('Кирпич', 25, 'цена за шт'),
-('Плитка', 100, 'цена за шт'),
-('Цемент', 70, 'цена за кг'),
-('Песок', 50, 'цена за кг'),
-('Арматура', 250, 'цена за шт');
+values ('РљРёСЂРїРёС‡', 25, 'С†РµРЅР° Р·Р° С€С‚'),
+('РџР»РёС‚РєР°', 100, 'С†РµРЅР° Р·Р° С€С‚'),
+('Р¦РµРјРµРЅС‚', 70, 'С†РµРЅР° Р·Р° РєРі'),
+('РџРµСЃРѕРє', 50, 'С†РµРЅР° Р·Р° РєРі'),
+('РђСЂРјР°С‚СѓСЂР°', 250, 'С†РµРЅР° Р·Р° С€С‚');
 go
 
---Заполняем заказы
+--Р—Р°РїРѕР»РЅСЏРµРј Р·Р°РєР°Р·С‹
 insert into orders(name, description)
 values 
-('Мангал', null),
-('Кирпичьный забор', 'Забор на дачном участке'),
-('Кирпичный дом','Пригород'),
-('Котедж Космос 2А','Срочный'),
-('Дорога к дому', 'Срочный'),
-('Котедж Речной 8Б','Срочный'),
-('Остановка "Поворот"', 'Срочный');
+('РњР°РЅРіР°Р»', null),
+('РљРёСЂРїРёС‡СЊРЅС‹Р№ Р·Р°Р±РѕСЂ', 'Р—Р°Р±РѕСЂ РЅР° РґР°С‡РЅРѕРј СѓС‡Р°СЃС‚РєРµ'),
+('РљРёСЂРїРёС‡РЅС‹Р№ РґРѕРј','РџСЂРёРіРѕСЂРѕРґ'),
+('РљРѕС‚РµРґР¶ РљРѕСЃРјРѕСЃ 2Рђ','РЎСЂРѕС‡РЅС‹Р№'),
+('Р”РѕСЂРѕРіР° Рє РґРѕРјСѓ', 'РЎСЂРѕС‡РЅС‹Р№'),
+('РљРѕС‚РµРґР¶ Р РµС‡РЅРѕР№ 8Р‘','РЎСЂРѕС‡РЅС‹Р№'),
+('РћСЃС‚Р°РЅРѕРІРєР° "РџРѕРІРѕСЂРѕС‚"', 'РЎСЂРѕС‡РЅС‹Р№');
 go
 
---Заполняем работников
+--Р—Р°РїРѕР»РЅСЏРµРј СЂР°Р±РѕС‚РЅРёРєРѕРІ
 insert into workers (name, surname, patronymic, birthdate)
 values 
 ('Graham', 'Riggs', 'Griffin', '19920409'),
@@ -197,49 +197,49 @@ values
 ('Guy', 'Merrill', 'Octavius', '19810721'),
 ('Brock', 'Small', 'Alfonso', '19860427'),
 ('Quin', 'Rodriquez', 'Amir', '19960321'),
-('Никитос', 'Васин', 'Васильевич', '21010201'),
-('Никитос', 'Васин', 'Васильевич', '22010201'),
-('Никитосик', 'Васин', 'Васильевич', '21010201'),
-('Никитос', 'Васиннюк', 'Васильевич', '21010201'),
-('Никитос', 'Васин', 'Васьевич', '21010201'),
-('Семен', 'Семёнов', 'Семёнович', '19920409'),
-('Пётр', 'Петров', 'Петрович', '19991015'),
-('Иванов', 'Иван', 'Иванович', '19810721'),
-('Олег', 'Олегов', 'Олегович', '19860427'),
-('Игорь', 'Игорев', 'Игоревич', '19960321'),
-('Вася', 'Чёткий', 'Перец', '20000922');
+('РќРёРєРёС‚РѕСЃ', 'Р’Р°СЃРёРЅ', 'Р’Р°СЃРёР»СЊРµРІРёС‡', '21010201'),
+('РќРёРєРёС‚РѕСЃ', 'Р’Р°СЃРёРЅ', 'Р’Р°СЃРёР»СЊРµРІРёС‡', '22010201'),
+('РќРёРєРёС‚РѕСЃРёРє', 'Р’Р°СЃРёРЅ', 'Р’Р°СЃРёР»СЊРµРІРёС‡', '21010201'),
+('РќРёРєРёС‚РѕСЃ', 'Р’Р°СЃРёРЅРЅСЋРє', 'Р’Р°СЃРёР»СЊРµРІРёС‡', '21010201'),
+('РќРёРєРёС‚РѕСЃ', 'Р’Р°СЃРёРЅ', 'Р’Р°СЃСЊРµРІРёС‡', '21010201'),
+('РЎРµРјРµРЅ', 'РЎРµРјС‘РЅРѕРІ', 'РЎРµРјС‘РЅРѕРІРёС‡', '19920409'),
+('РџС‘С‚СЂ', 'РџРµС‚СЂРѕРІ', 'РџРµС‚СЂРѕРІРёС‡', '19991015'),
+('РРІР°РЅРѕРІ', 'РРІР°РЅ', 'РРІР°РЅРѕРІРёС‡', '19810721'),
+('РћР»РµРі', 'РћР»РµРіРѕРІ', 'РћР»РµРіРѕРІРёС‡', '19860427'),
+('РРіРѕСЂСЊ', 'РРіРѕСЂРµРІ', 'РРіРѕСЂРµРІРёС‡', '19960321'),
+('Р’Р°СЃСЏ', 'Р§С‘С‚РєРёР№', 'РџРµСЂРµС†', '20000922');
 go
 
---Заполняем спецификацию
+--Р—Р°РїРѕР»РЅСЏРµРј СЃРїРµС†РёС„РёРєР°С†РёСЋ
 insert into material_specification(quantity, material_id, specification_id)
 values 
-(50, (select id from dbo.materials where name = 'Кирпич'), (select id from get_spec_by_ord_name('Мангал'))),
-(10, (select id from dbo.materials where name = 'Плитка'), (select id from get_spec_by_ord_name('Мангал'))),
-(50, (select id from dbo.materials where name = 'Цемент'), (select id from get_spec_by_ord_name('Мангал'))),
-(30, (select id from dbo.materials where name = 'Песок'), (select id from get_spec_by_ord_name('Мангал'))),
-(9, (select id from dbo.materials where name = 'Арматура'), (select id from get_spec_by_ord_name('Мангал'))),
-(2500, (select id from dbo.materials where name = 'Кирпич'), (select id from get_spec_by_ord_name('Кирпичьный забор'))),
-(500, (select id from dbo.materials where name = 'Цемент'), (select id from get_spec_by_ord_name('Кирпичьный забор'))),
-(300, (select id from dbo.materials where name = 'Песок'), (select id from get_spec_by_ord_name('Кирпичьный забор'))),
-(30, (select id from dbo.materials where name = 'Арматура'), (select id from get_spec_by_ord_name('Кирпичьный забор')));
+(50, (select id from dbo.materials where name = 'РљРёСЂРїРёС‡'), (select id from get_spec_by_ord_name('РњР°РЅРіР°Р»'))),
+(10, (select id from dbo.materials where name = 'РџР»РёС‚РєР°'), (select id from get_spec_by_ord_name('РњР°РЅРіР°Р»'))),
+(50, (select id from dbo.materials where name = 'Р¦РµРјРµРЅС‚'), (select id from get_spec_by_ord_name('РњР°РЅРіР°Р»'))),
+(30, (select id from dbo.materials where name = 'РџРµСЃРѕРє'), (select id from get_spec_by_ord_name('РњР°РЅРіР°Р»'))),
+(9, (select id from dbo.materials where name = 'РђСЂРјР°С‚СѓСЂР°'), (select id from get_spec_by_ord_name('РњР°РЅРіР°Р»'))),
+(2500, (select id from dbo.materials where name = 'РљРёСЂРїРёС‡'), (select id from get_spec_by_ord_name('РљРёСЂРїРёС‡СЊРЅС‹Р№ Р·Р°Р±РѕСЂ'))),
+(500, (select id from dbo.materials where name = 'Р¦РµРјРµРЅС‚'), (select id from get_spec_by_ord_name('РљРёСЂРїРёС‡СЊРЅС‹Р№ Р·Р°Р±РѕСЂ'))),
+(300, (select id from dbo.materials where name = 'РџРµСЃРѕРє'), (select id from get_spec_by_ord_name('РљРёСЂРїРёС‡СЊРЅС‹Р№ Р·Р°Р±РѕСЂ'))),
+(30, (select id from dbo.materials where name = 'РђСЂРјР°С‚СѓСЂР°'), (select id from get_spec_by_ord_name('РљРёСЂРїРёС‡СЊРЅС‹Р№ Р·Р°Р±РѕСЂ')));
 go
 
---Запрос для теста перерасчета стоимости заказа
+--Р—Р°РїСЂРѕСЃ РґР»СЏ С‚РµСЃС‚Р° РїРµСЂРµСЂР°СЃС‡РµС‚Р° СЃС‚РѕРёРјРѕСЃС‚Рё Р·Р°РєР°Р·Р°
 --update material_specification
 --set quantity = 45 
---where  material_id =  (select id from dbo.materials where name = 'Кирпич') and specification_id = (select id from get_spec_by_ord_name('Мангал'));
+--where  material_id =  (select id from dbo.materials where name = 'РљРёСЂРїРёС‡') and specification_id = (select id from get_spec_by_ord_name('РњР°РЅРіР°Р»'));
 --go
 
---Создаём представление
+--РЎРѕР·РґР°С‘Рј РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ
 create view orders_info 
 as
-	select o.name as 'Заказ', 
-	o.price as 'Цена заказа',
-	o.description as 'Описание заказа',
-	ms.quantity  as 'Количество материала',
-	m.name as 'Материал',
-	m.price as 'Цена', 
-	m.description as 'Коментарий'
+	select o.name as 'Р—Р°РєР°Р·', 
+	o.price as 'Р¦РµРЅР° Р·Р°РєР°Р·Р°',
+	o.description as 'РћРїРёСЃР°РЅРёРµ Р·Р°РєР°Р·Р°',
+	ms.quantity  as 'РљРѕР»РёС‡РµСЃС‚РІРѕ РјР°С‚РµСЂРёР°Р»Р°',
+	m.name as 'РњР°С‚РµСЂРёР°Р»',
+	m.price as 'Р¦РµРЅР°', 
+	m.description as 'РљРѕРјРµРЅС‚Р°СЂРёР№'
 	from dbo.orders as o
 	join dbo.specification as s on o.id = s.order_id
 	left join dbo.material_specification as ms on s.id = ms.specification_id
