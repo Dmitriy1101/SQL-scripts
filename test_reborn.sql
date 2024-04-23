@@ -1,7 +1,7 @@
 use test;
 go
 
---1 таблицы
+--1 С‚Р°Р±Р»РёС†С‹
 --IF OBJECT_ID('dbo.Basket', 'U') IS NOT NULL
 DROP TABLE IF EXISTS dbo.Basket;
 go
@@ -44,7 +44,7 @@ create table dbo.Basket(
 	);
 go
 
---2 процедура
+--2 РїСЂРѕС†РµРґСѓСЂР°
 DROP PROCEDURE IF EXISTS dbo.usp_MakeFamilyPurchase;
 go
 
@@ -67,17 +67,17 @@ BEGIN
 END
 go
 
---3 представление
-DROP VIEW IF EXISTS dbo.vw_SKUPriceв;
+--3 РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ
+DROP VIEW IF EXISTS dbo.vw_SKUPriceРІ;
 go
 
-create view dbo.vw_SKUPriceв
+create view dbo.vw_SKUPriceРІ
 as
 	select *, dbo.udf_GetSKUPrice(s.id) as Price
 	from dbo.SKU as s;
 go
 
---4 функция
+--4 С„СѓРЅРєС†РёСЏ
 DROP FUNCTION IF EXISTS dbo.udf_GetSKUPrice;
 go
 
@@ -96,7 +96,7 @@ return @price;
 end;
 go
 
---5 тригер
+--5 С‚СЂРёРіРµСЂ
 DROP TRIGGER IF EXISTS dbo.TR_Basket_insert_update;
 go
 
