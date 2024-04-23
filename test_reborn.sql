@@ -2,16 +2,16 @@ use test;
 go
 
 --1 таблицы
-IF OBJECT_ID('dbo.SKU', 'U') IS NOT NULL
-DROP TABLE dbo.SKU;
+--IF OBJECT_ID('dbo.Basket', 'U') IS NOT NULL
+DROP TABLE IF EXISTS dbo.Basket;
 go
 
-IF OBJECT_ID('dbo.Family', 'U') IS NOT NULL
-DROP TABLE dbo.Family;
+--IF OBJECT_ID('dbo.SKU', 'U') IS NOT NULL
+DROP TABLE IF EXISTS dbo.SKU;
 go
 
-IF OBJECT_ID('dbo.Basket', 'U') IS NOT NULL
-DROP TABLE dbo.Basket;
+--IF OBJECT_ID('dbo.Family', 'U') IS NOT NULL
+DROP TABLE IF EXISTS dbo.Family;
 go
 
 create table dbo.SKU(
@@ -45,8 +45,7 @@ create table dbo.Basket(
 go
 
 --2 процедура
-IF OBJECT_ID('dbo.usp_MakeFamilyPurchase', 'U') IS NOT NULL
-DROP PROCEDURE dbo.usp_MakeFamilyPurchase;
+DROP PROCEDURE IF EXISTS dbo.usp_MakeFamilyPurchase;
 go
 
 CREATE PROCEDURE dbo.usp_MakeFamilyPurchase
@@ -69,8 +68,7 @@ END
 go
 
 --3 представление
-IF OBJECT_ID('dbo.vw_SKUPriceв', 'U') IS NOT NULL
-DROP view dbo.vw_SKUPriceв;
+DROP VIEW IF EXISTS dbo.vw_SKUPriceв;
 go
 
 create view dbo.vw_SKUPriceв
@@ -80,8 +78,7 @@ as
 go
 
 --4 функция
-IF OBJECT_ID('dbo.udf_GetSKUPrice', 'U') IS NOT NULL
-DROP function dbo.udf_GetSKUPrice;
+DROP FUNCTION IF EXISTS dbo.udf_GetSKUPrice;
 go
 
 create function dbo.udf_GetSKUPrice (@ID_SKU int)
@@ -100,8 +97,7 @@ end;
 go
 
 --5 тригер
-IF OBJECT_ID('dbo.TR_Basket_insert_update', 'U') IS NOT NULL
-DROP trigger dbo.TR_Basket_insert_update;
+DROP TRIGGER IF EXISTS dbo.TR_Basket_insert_update;
 go
 
 create trigger dbo.TR_Basket_insert_update
